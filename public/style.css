@@ -7,7 +7,7 @@ body {
   min-height: 100%;
   font-family: ui-rounded, "Arial Rounded MT Bold", system-ui;
   color: #62465f;
-  background: #f7cfe8;
+  background: #f3a9d1;
 }
 body {
   min-height: 100dvh;
@@ -16,7 +16,7 @@ body {
     radial-gradient(circle at 85% 25%, #d8b8ec 0 5px, transparent 6px),
     radial-gradient(circle at 75% 72%, #fff1f8 0 3px, transparent 4px),
     radial-gradient(circle at 18% 82%, #e9b7d8 0 6px, transparent 7px),
-    linear-gradient(155deg, #f9d4ea 0%, #f6c8e3 45%, #edcef1 100%);
+    linear-gradient(155deg, #f7badb 0%, #f1a5cf 45%, #dab6ed 100%);
 }
 .garden {
   position: relative;
