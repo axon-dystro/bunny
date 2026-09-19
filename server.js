@@ -6,19 +6,25 @@ import { fileURLToPath } from "url";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const app = express();
 const PORT = Number(process.env.PORT || 2909);
-const DATA_FILE = path.join(__dirname, "data.json");
+const DATA_FILE = process.env.BUNNY_DATA_FILE || path.join(
+  fs.existsSync("/srv/chatgpt/sandbox/data") ? "/srv/chatgpt/sandbox/data" : path.join(__dirname, "data"),
+  "data.json"
+);
 
 function loadData() {
-  try {
-    const d = JSON.parse(fs.readFileSync(DATA_FILE, "utf8"));
-    return { points: Math.max(0, Number(d.points)||0), strikes: Math.max(0, Number(d.strikes)||0) };
-  } catch {
-    return { points: 5, strikes: 2 };
+  const d = JSON.parse(fs.readFileSync(DATA_FILE, "utf8"));
+  if (!Number.isInteger(d.points) || d.points < 0 ||
+      !Number.isInteger(d.strikes) || d.strikes < 0) {
+    throw new Error("Invalid Bunny state; refusing to overwrite stored data");
   }
+  return { points: d.points, strikes: d.strikes };
 }
 let data = loadData();
-const save = () => fs.writeFileSync(DATA_FILE, JSON.stringify(data, null, 2));
-save();
+const save = () => {
+  const temporary = DATA_FILE + ".tmp";
+  fs.writeFileSync(temporary, JSON.stringify(data, null, 2), { mode: 0o640 });
+  fs.renameSync(temporary, DATA_FILE);
+};
 
 app.use(express.json());
 app.use(express.static(path.join(__dirname, "public")));
