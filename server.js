@@ -31,7 +31,7 @@ app.use(express.static(path.join(__dirname, "public")));
 
 function isPookie(req) {
   const host = (req.hostname || "").toLowerCase();
-  return host.startsWith("pookie.") || host === "localhost" || host === "127.0.0.1";
+  return host.startsWith("pookie.") || host === "dev.pookie.dnd-tools.de" || host === "localhost" || host === "127.0.0.1";
 }
 
 app.get("/api/state", (req,res) => res.json({ ...data, adminSite: isPookie(req) }));
